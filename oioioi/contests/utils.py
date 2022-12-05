@@ -233,7 +233,7 @@ def submittable_problem_instances(request):
     controller = request.contest.controller
     queryset = (
         ProblemInstance.objects.filter(contest=request.contest)
-        .select_related('problem')
+        .select_related('problem', 'contest')
         .prefetch_related('round')
     )
     return [pi for pi in queryset if controller.can_submit(request, pi)]
@@ -244,7 +244,7 @@ def visible_problem_instances(request, no_admin=False):
     controller = request.contest.controller
     queryset = (
         ProblemInstance.objects.filter(contest=request.contest)
-        .select_related('problem')
+        .select_related('problem', 'contest', 'problem__contest', 'problem__author')
         .prefetch_related('round')
     )
     return [pi for pi in queryset if controller.can_see_problem(
