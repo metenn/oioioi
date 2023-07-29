@@ -285,6 +285,7 @@ class TestSubmissionListFilters(TestCase):
     def test_all_filters(self):
         args = {
             'has_active_system_error': 'yes',
+            'is_final': 'yes',
             'kind': 'NORMAL',
             'status__exact': 'INI_OK',
             'revealed': '1',
