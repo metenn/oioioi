@@ -47,7 +47,7 @@
                             {{ t.name }}
                         </a>
                     </td>
-                    <td>{{ t.count_posts }}</td>
+                    <td>{{ t.post_count }}</td>
                     {% if is_admin %}
                         <td>
                             <a href="#" data-post-url="{% url 'forum_thread_delete' contest_id=contest.id category_id=category.id thread_id=t.id %}">
@@ -55,8 +55,8 @@
                             </a>
                         </td>
                         <td>
-                            <div class="{% if t.count_reported > 0 %}badge badge-danger{% endif %}">
-                                {{ t.count_reported }}
+                            <div class="{% if t.reported_count > 0 %}badge badge-danger{% endif %}">
+                                {{ t.reported_count }}
                             </div>
                         </td>
                     {% endif %}

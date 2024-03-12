@@ -118,9 +118,23 @@ def latest_posts_forum_view(request):
 def category_view(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     threads = (
-        category.thread_set.prefetch_related('post_set')
+        category.thread_set
         .select_related('last_post', 'last_post__author')
-        .all()
+        .only(
+            'id',
+            'category',
+            'name',
+            'last_post',
+            'last_post__author',
+            'last_post__author__first_name',
+            'last_post__author__last_name',
+            'last_post__author__username',
+            'last_post__add_date',
+        )
+        .annotate(
+            post_count=Count('post', distinct=True),
+            reported_count=Count('post', filter=Q(post__reported=True), distinct=True),
+        )
     )
 
     return TemplateResponse(
