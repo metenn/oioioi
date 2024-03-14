@@ -135,6 +135,7 @@ def category_view(request, category_id):
             post_count=Count('post', distinct=True),
             reported_count=Count('post', filter=Q(post__reported=True), distinct=True),
         )
+        .order_by('-last_post__add_date')
     )
 
     return TemplateResponse(
