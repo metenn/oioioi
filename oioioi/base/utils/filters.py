@@ -1,5 +1,6 @@
 from django.contrib.admin import SimpleListFilter
 from django.db.models import Case, F, Subquery, When
+from django.db.models.functions import Coalesce
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from oioioi.problems.models import ProblemName
@@ -26,12 +27,9 @@ class ProblemNameListFilter(SimpleListFilter):
                 )
             )
             .annotate(
-                problem_display_name=Case(
-                    When(
-                        problem_localized_name__isnull=True,
-                        then=F('problem_legacy_name'),
-                    ),
-                    default=F('problem_localized_name'),
+                problem_display_name=Coalesce(
+                    F('problem_localized_name'),
+                    F('problem_legacy_name')
                 )
             )
             .values_list('problem_legacy_name', 'problem_display_name')

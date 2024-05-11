@@ -574,9 +574,9 @@ class ProblemInstanceAdmin(admin.ModelAdmin):
                 )
             )
             .annotate(
-                ordering_name=Case(
-                    When(localized_name__isnull=True, then=F('problem__legacy_name')),
-                    default=F('localized_name'),
+                ordering_name=Coalesce(
+                    F('localized_name'),
+                    F('problem__legacy_name')
                 )
             )
         )
