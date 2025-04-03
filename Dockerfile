@@ -37,7 +37,7 @@ ARG oioioi_uid=1234
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh && \
     mkdir -pv /sio2/oioioi && \
     mkdir -pv /sio2/sandboxes && \
-    useradd -U oioioi -m -d /home/oioioi/ -u $oioioi_uid && \
+    useradd -U oioioi -m -d /home/oioioi/ -u 1234 && \
     echo "oioioi ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     chown -R oioioi:oioioi /sio2
 

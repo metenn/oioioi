@@ -1,13 +1,13 @@
 {% extends "simpleui/simpleui-base.html" %}
-{% load i18n static compress %}
+{% load i18n static %}
 
 {% block title %}{% trans "Contest dashboard" %}{% endblock %}
 
 {% block styles %}
     {{ block.super }}
-    {% compress css %}
+    
         <link charset="utf-8" rel="stylesheet" type="text/x-scss" href="{{ STATIC_URL }}simpleui/contest/contest.scss">
-    {% endcompress %}
+    
 {% endblock %}
 
 {% block scripts %}

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load compress %}
+
 
 {% block styles %}
 {{ block.super }}
-{% compress css %}
+
     <link charset="utf-8" rel="stylesheet" type="text/x-scss"
           href="{{ STATIC_URL }}simpleui/simpleui.scss">
-{% endcompress %}
+
 {% endblock %}
 
 {% block body %}

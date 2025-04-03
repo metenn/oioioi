@@ -1,13 +1,13 @@
 {% extends "simpleui/simpleui-base.html" %}
-{% load i18n static compress %}
+{% load i18n static %}
 
 {% block title %}{% trans "User dashboard" %}{% endblock %}
 
 {% block styles %}
 {{ block.super }}
-{% compress css %}
+
     <link charset="utf-8" rel="stylesheet" type="text/x-scss" href="{{ STATIC_URL }}simpleui/main_dashboard.scss">
-{% endcompress %}
+
 {% endblock %}
 
 {% block container-class %}simpleui__container{% endblock %}

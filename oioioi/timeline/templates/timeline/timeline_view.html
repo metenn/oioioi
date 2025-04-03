@@ -1,12 +1,12 @@
 {% extends "base-with-menu.html" %}
-{% load i18n compress %}
+{% load i18n %}
 
 {% block styles %}
 {{ block.super }}
-{% compress css %}
+
     <link charset="utf-8" rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap-datetimepicker-oioioi/bootstrap-datetimepicker.min.css" />
     <link charset="utf-8" rel="stylesheet" type="text/x-scss" href="{{ STATIC_URL }}timeline/timeline.scss" />
-{% endcompress %}
+
 {% endblock %}
 
 {% block scripts %}

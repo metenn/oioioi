@@ -1,5 +1,5 @@
 {% extends "base-with-menu.html" %}
-{% load i18n simple_filters compress simple_tags %}
+{% load i18n simple_filters simple_tags %}
 
 {% block title %}
     {% if member_type == 'teacher' %}
@@ -11,9 +11,9 @@
 
 {% block styles %}
     {{ block.super }}
-    {% compress css %}
+    
         <link charset="utf-8" rel="stylesheet" type="text/css" href="{{ STATIC_URL }}teachers/members.css">
-    {% endcompress %}
+    
 {% endblock %}
 
 {% block main-content %}

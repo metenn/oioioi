@@ -5,6 +5,8 @@ from django.conf import settings
 from django.contrib import admin as django_admin
 from django.views import i18n
 from django.urls import include, re_path
+from django.utils import timezone
+from django.views.decorators.http import last_modified
 
 from oioioi.base import registration_backend
 from oioioi.filetracker.views import raw_file_view
@@ -15,13 +17,17 @@ handler403 = 'oioioi.base.views.handler403'
 handler404 = 'oioioi.base.views.handler404'
 handler500 = 'oioioi.base.views.handler500'
 
+last_modified_date = timezone.now()
+
 urlpatterns = [
     re_path(
         r'^jsi18n/$',
-        i18n.JavaScriptCatalog.as_view(
-            packages=[
-                'oioioi._locale',
-            ]
+        last_modified(lambda req, **kw: last_modified_date)(
+            i18n.JavaScriptCatalog.as_view(
+                packages=[
+                    'oioioi._locale',
+                ]
+            )
         ),
         name='javascript_catalog',
     ),
@@ -29,12 +35,12 @@ urlpatterns = [
     re_path(r'^captcha/', include('captcha.urls')),
 ]
 
-if settings.DEBUG:
-    import debug_toolbar
+# if settings.DEBUG:
+#     import debug_toolbar
 
-    urlpatterns += [
-        re_path(r'^__debug__/', include(debug_toolbar.urls)),
-    ]
+#     urlpatterns += [
+#         re_path(r'^__debug__/', include(debug_toolbar.urls)),
+#     ]
 
 def try_to_import_module(name):
     try:

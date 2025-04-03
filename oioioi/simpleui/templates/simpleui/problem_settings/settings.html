@@ -1,16 +1,16 @@
 {% extends "simpleui/simpleui-base.html" %}
-{% load i18n compress static %}
+{% load i18n static %}
 
 {% block title %}{% trans "Problem settings" %}{% endblock %}
 
 {% block styles %}
     {{ block.super }}
-    {% compress css %}
+    
         <link charset="utf-8" rel="stylesheet" type="text/x-scss"
               href="{{ STATIC_URL }}simpleui/simpleui.scss">
         <link charset="utf-8" rel="stylesheet" type="text/x-scss"
               href="{{ STATIC_URL }}simpleui/problem_settings/problem_settings.scss">
-    {% endcompress %}
+    
 {% endblock %}
 
 {% block container-class %}simpleui__container{% endblock %}
