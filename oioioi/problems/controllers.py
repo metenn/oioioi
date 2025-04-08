@@ -25,6 +25,7 @@ from oioioi.evalmgr.tasks import create_environ, delay_environ
 from oioioi.problems.models import ProblemStatistics, UserStatistics
 from oioioi.problems.utils import can_admin_problem
 from oioioi.programs.utils import get_checker_format
+from oioioi.rejudgemgr.models import Rejudge
 
 logger = logging.getLogger(__name__)
 
@@ -145,10 +146,17 @@ class ProblemController(RegisteredSubclassesBase, ObjectWithMixins):
         """
         pass
 
-    def judge(self, submission, extra_args=None, is_rejudge=False):
+    def judge(self, submission, extra_args=None, is_rejudge=False, rejudge_id=None):
         environ = create_environ()
         environ['extra_args'] = extra_args or {}
         environ['is_rejudge'] = is_rejudge
+        if is_rejudge and not rejudge_id:
+            # TODO: Warning
+            print('a')
+            environ['rejudge_id'] = Rejudge.record(submission).id
+        elif is_rejudge:
+            print('b')
+            environ['rejudge_id'] = rejudge_id
         if hasattr(submission, 'programsubmission'):
             user_lang = None
             for code, lang in settings.LANGUAGES:

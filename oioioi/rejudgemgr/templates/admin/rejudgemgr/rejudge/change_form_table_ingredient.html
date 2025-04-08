@@ -1,0 +1,34 @@
+<table class="table table-sm table-striped table-bordered">
+    <thead class="{# thead-light #}">
+        <tr>
+            <th>Submission ID</th>
+            <th>Before</th>
+            <th>After</th>
+            <th>Change</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in list %}
+            <tr>
+                <td>
+                    {% url 'submission' submission_id=r.submission.id as link %}
+                    <a href="{{link}}">{{ r.submission.id }} <span style="color: #9abcda !important;">{{ r.submission }}</span></a>
+                </td>
+                <td>{{ r.score_old.status }} {{ r.score_old.score|default:'-' }}</td>
+                <td>{{ r.score_new.status }} {{ r.score_new.score|default:'-' }}</td>
+                <td {% if important %}class="table-info"{% endif %}>
+                    {{ r.score_diff }}
+                    {% if r.warning %}
+                        <span data-toggle="tooltip" data-placement="top" data-html="true" title="{{r.warning}}">
+                            <i class="fa-solid fa-warning"></i>
+                        </span>
+                    {% endif %}
+                </td>
+                <td class="text-right">
+                    <input type="submit" value="Supersede" class="btn btn-sm btn-danger" />
+                </td>
+                {% comment %} <td><button type="button" class="btn btn-outline-info btn-sm">Exact changes</button></td> {% endcomment %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

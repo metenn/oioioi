@@ -660,9 +660,9 @@ class ContestController(RegisteredSubclassesBase, ObjectWithMixins):
             request, problem_instance, form_data, **kwargs
         )
 
-    def judge(self, submission, extra_args=None, is_rejudge=False):
+    def judge(self, submission, extra_args=None, is_rejudge=False, rejudge_id=None):
         submission.problem_instance.problem.controller.judge(
-            submission, extra_args, is_rejudge
+            submission, extra_args, is_rejudge, rejudge_id
         )
 
     def fill_evaluation_environ(self, environ, submission):

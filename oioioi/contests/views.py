@@ -76,6 +76,7 @@ from oioioi.problems.utils import (
     query_zip,
     update_tests_from_main_pi,
 )
+from oioioi.rejudgemgr.models import Rejudge
 from oioioi.status.registry import status_registry
 
 
@@ -717,9 +718,11 @@ def rejudge_all_submissions_for_problem_view(request, problem_instance_id):
     problem_instance = get_object_or_404(ProblemInstance, id=problem_instance_id)
     count = problem_instance.submission_set.count()
     if request.POST:
-        for submission in problem_instance.submission_set.all():
+        submission_set = problem_instance.submission_set.all()
+        rj = Rejudge.record_many(list(submission_set), f"(Task: {problem_instance.problem.legacy_name} {problem_instance.short_name}) Rejudge_all after change to problem")
+        for submission in submission_set:
             problem_instance.controller.judge(
-                submission, request.GET.dict(), is_rejudge=True
+                submission, request.GET.dict(), is_rejudge=True, rejudge_id=rj.id
             )
         messages.info(
             request,

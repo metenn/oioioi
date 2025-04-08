@@ -1,0 +1,91 @@
+{% extends "admin/change_form.html" %}
+{% block after_related_objects %}
+{{ block.super }}
+{% comment %} <style>
+    .table-sm td {
+        margin: 0 !important;
+        padding: 0.05rem 0.2rem 0.05rem 0.2rem !important;
+    }
+</style> {% endcomment %}
+{% if rejudge.unjudged_list|length > 0 %}
+    <div class="accordion" id="rejudgemgr-unjudged-accordion">
+        <div class="card bg-warning">
+            <div class="{# card-header #}" id="rejudgemgr-unjudged-heading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-white collapsed" type="button" data-toggle="collapse" data-target="#rejudgemgr-unjudged-collapse" aria-expanded="true" aria-controls="rejudgemgr-unjudged-collapse">
+                        <i class="fa-solid fa-chevron-down"></i> Not yet judged submissions: {{ rejudge.unjudged_list|length }}
+                    </button>
+                </h5>
+            </div>
+        </div>
+        <div id="rejudgemgr-unjudged-collapse" class="collapse" aria-labelledby="rejudgemgr-unjudged-heading" data-parent="#rejudgemgr-unjudged-accordion">
+            <div class="card-body bg-dark">
+                <table class="table table-sm table-striped table-secondary">
+                    <thead class="{# thead-light #}">
+                        <tr>
+                            <th>Submission ID</th>
+                            <th>Before</th>
+                            <th>After</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in rejudge.unjudged_list %}
+                            <tr>
+                                <td>
+                                    {# contest_id=contest.id not needed? #}
+                                    {% url 'submission' submission_id=r.submission.id as link %}
+                                    <a href="{{link}}">{{ r.submission.id }} <span style="color: #3f5c6a !important;">{{ r.submission }}</span></a>
+                                </td>
+                                <td>{{ r.score_old.status }} {{ r.score_old.score|default:'-' }}</td>
+                                <td>{{ r.score_new.status }} {{ r.score_new.score|default:'-' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+<div class="card bg-success p-2 text-white">
+    Rejudge completed
+</div>
+{% endif %}
+<br>
+<h3>Differing submissions: {{ rejudge.changed_list|length }}</h3>
+{% include "admin/rejudgemgr/rejudge/change_form_table_ingredient.html" with list=rejudge.changed_list important=True %}
+<br>
+<h4>Unchanged submissions: {{ rejudge.unchanged_list|length }}</h4>
+{% if rejudge.unchanged_list|length > 0 %}
+    {% include "admin/rejudgemgr/rejudge/change_form_table_ingredient.html" with list=rejudge.unchanged_list important=False %}
+{% endif %}
+<br>
+{% endblock %}
+{% block submit_buttons_bottom %}
+<div class="submit-row d-none d-md-flex breadcrumb">
+    {% comment %}
+    <a
+        class="btn btn-danger deletelink"
+        href="/c/br7hh/admin/rejudgemgr/rejudge/10/delete/"
+        >Delete</a
+    >
+    {% endcomment %}
+
+    <div class="ml-auto">
+        {% comment %}
+        <input
+            class="btn btn-secondary"
+            type="submit"
+            value="Save and add another"
+            name="_addanother"
+        />
+        {% endcomment %}
+        <input
+            class="btn btn-secondary"
+            type="submit"
+            value="Save comment"
+            name="_continue"
+        />
+        <input type="submit" value="Supersede all" class="btn btn-danger" />
+    </div>
+</div>
+{% endblock %}

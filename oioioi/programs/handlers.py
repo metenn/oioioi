@@ -27,6 +27,7 @@ from oioioi.programs.models import (
     UserOutGenStatus,
     LanguageOverrideForTest,
 )
+from oioioi.rejudgemgr.models import Rejudge, RejudgeRelation
 
 logger = logging.getLogger(__name__)
 
@@ -501,6 +502,17 @@ def _make_base_report(env, submission, kind):
     submission_report = SubmissionReport(submission=submission)
     submission_report.kind = kind
     submission_report.save()
+    
+    if "rejudge_id" in env:
+        print('c')
+        rejudge_id = env["rejudge_id"]
+        assert isinstance(rejudge_id, int)
+        rejudgerel = RejudgeRelation.objects.get(rejudge_id=rejudge_id, submit=submission)
+        rejudgerel.rj_newer.add(submission_report)
+    elif env['is_rejudge'] and "rejudge_id" in env:
+        print('e')
+    elif env["is_rejudge"]:
+        print('xd')
 
     env['report_id'] = submission_report.id
 

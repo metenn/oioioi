@@ -44,6 +44,9 @@ def make_problem_filename(instance, filename):
     )
 
 
+class ProblemManager(models.Manager):
+    def get_queryset(self):
+        return super(ProblemManager, self).get_queryset().prefetch_related('names')
 
 class Problem(models.Model):
     """Represents a problem in the problems database.
@@ -117,6 +120,8 @@ class Problem(models.Model):
         on_delete=models.CASCADE,
     )
 
+    objects = ProblemManager()
+
     @cached_property
     def name(self):
         problem_name = ProblemName.objects.filter(
@@ -155,6 +160,7 @@ class Problem(models.Model):
     class Meta(object):
         verbose_name = _("problem")
         verbose_name_plural = _("problems")
+        base_manager_name = 'objects'
         permissions = (
             ('can_modify_tags', _("Can modify tags")),
             ('problems_db_admin', _("Can administer the problems database")),
